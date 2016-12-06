@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <!--程序默认的颜色-->
+    <color name="light_blue">#ff00ddff</color>
+    <color name="tras_blue">#8800ddff</color>
+    <color name="light_red">#FF000D</color>
+    <color name="tras_red">#88FF000D</color>
+    <color name="tras_dark">#30000000</color>
+
+
+    <!--自定义属性的颜色-->
+    <color name="default_color">#006611</color>
+    <color name="touch_light">#FF9999</color>
+    <color name="touch_tras">#50FF9999</color>
+    <color name="error_light">#FF99FF</color>
+    <color name="error_tras">#50FF99FF</color>
+</resources>

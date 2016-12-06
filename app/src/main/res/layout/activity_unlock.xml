@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Tips:   连接123456个点完成解锁"
+        android:textColor="@color/light_red" />
+
+    <com.example.administrator.unlock.customview.CustomMainAppLock
+        android:id="@+id/lock"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_centerInParent="true"
+        app:error_center_circle_color="@color/error_tras"
+        app:error_small_circle_color="@color/error_light"
+        app:less_point="3"
+        app:non_circle_color="@color/default_color"
+        app:non_circle_size="5dp"
+        app:non_circle_width="2dp"
+        app:touch_big_circle_size="21dp"
+        app:touch_center_circle_color="@color/touch_tras"
+        app:touch_center_circle_size="18dp"
+        app:touch_small_circle_color="@color/touch_light" />
+</LinearLayout>

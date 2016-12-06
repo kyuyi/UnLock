@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--九宫格图案锁的属性-->
+    <declare-styleable name="CustomMainAppLock">
+        <!--没有触摸的属性(默认的属性，手指没有触摸到的格子)-->
+        <attr name="non_circle_color" format="color" />  <!--圆圈的颜色-->
+        <attr name="non_circle_size" format="dimension" /> <!--圆圈的大小-->
+        <attr name="non_circle_width" format="dimension" /> <!--圆圈的边框宽度-->
+        <!--手指头触摸的格子和连接闲的属性-->
+        <attr name="touch_small_circle_color" format="color" /><!--已经连接的格子的小圆的颜色-->
+        <attr name="touch_center_circle_color" format="color" /><!--已经连接的格子的中间元的颜色-->
+        <attr name="touch_big_circle_size" format="dimension" /><!--大圆的大小-->
+        <attr name="touch_center_circle_size" format="dimension" /> <!--中间圆的大小-->
+        <!--密码错误的颜色-->
+        <attr name="error_small_circle_color" format="color" /> <!--密码错误时候小圆和大圆的颜色-->
+        <attr name="error_center_circle_color" format="color" /><!--密码错误的时候中间圆的颜色-->
+        <attr name="user_modle">//使用的模式
+            //设置密码模式
+            <enum name="MODLE_SETTING_PASSWORD" value="0" />
+            //解锁模式
+            <enum name="MODLE_UNLOCK" value="1" />
+        </attr>
+        <attr name="less_point" format="integer" /> <!--密码的最少连接个数-->
+        <attr name="max_try_num" format="integer" /> <!--密码输入错误时最大尝试次数-->
+    </declare-styleable>
+</resources>
