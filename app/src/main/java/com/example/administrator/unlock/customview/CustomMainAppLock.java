@@ -47,8 +47,8 @@ public class CustomMainAppLock extends View {
     @SuppressWarnings("deprecation")
     private int error_center_circle_color = getResources().getColor(R.color.tras_red);
     private int max_try_num = 5;
-
-    private int user_modle;
+    private boolean isCandrawa = true;
+    private int user_modle;  //0设置密码模式，1解锁模式
 
     public CustomMainAppLock(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -85,12 +85,16 @@ public class CustomMainAppLock extends View {
 
     int allCount = 0;
     boolean isError = false;
-     Handler mHandler = new Handler() {
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             isError = false;
             reSetting();
+            if (user_modle == 0) {
+                mSettingListence.passwordIsNotSame("", "", 1);
+            }
             invalidate();
+
         }
     };
 
@@ -146,7 +150,7 @@ public class CustomMainAppLock extends View {
 
     }
 
-    boolean isNeedWithHand = true;
+//    boolean isNeedWithHand = true;
 
     public void drawLine(Canvas canvas) {
         mPaint.setStrokeWidth(non_circle_width);
@@ -158,11 +162,10 @@ public class CustomMainAppLock extends View {
         }
 
         for (int i = 1; i < mLineVo.size(); i++) {
-
             canvas.drawLine(mLineVo.get(i - 1).X, mLineVo.get(i - 1).Y, mLineVo.get(i).X, mLineVo.get(i).Y, mPaint);
         }
-        if (mLineVo.size() > 0 && mLineVo.size() < 9 && isNeedWithHand) {
-
+        if (mLineVo.size() > 0 && !isError) {
+            //画最后的尾随线,该线会跟随手指移动，由于在错误的时候密码格子和线条会显示一段时间，但是尾随线可能不在密码格子内，所有在密码错误的时候最后的尾随线不画出来
             canvas.drawLine(mLineVo.get(mLineVo.size() - 1).X, mLineVo.get(mLineVo.size() - 1).Y, touchX, touchY, mPaint);
         }
     }
@@ -188,15 +191,19 @@ public class CustomMainAppLock extends View {
         if (mIsTry) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    isNeedWithHand = true;
-                    touchX = event.getX();
-                    touchY = event.getY();
-                    isACell(event.getX(), event.getY());
+                    if (isCandrawa) {
+//                        isNeedWithHand = true;
+                        touchX = event.getX();
+                        touchY = event.getY();
+                        isACell(event.getX(), event.getY());
+                    }
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    touchX = event.getX();
-                    touchY = event.getY();
-                    isACell(touchX, touchY);
+                    if (isCandrawa) {
+                        touchX = event.getX();
+                        touchY = event.getY();
+                        isACell(touchX, touchY);
+                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     getModle();
@@ -212,8 +219,7 @@ public class CustomMainAppLock extends View {
 
     //判断用户的使用模式
     public void getModle() {
-
-
+        isCandrawa = false;
         if (user_modle == 0) {
             for (int i = 0; i < pressVo.size(); i++) {
                 pw.append(pressVo.get(i).pw);
@@ -227,7 +233,7 @@ public class CustomMainAppLock extends View {
                         mSettingListence.passSettingSuccess(second);
                         reSetting();
                     } else {
-                        mSettingListence.passwordIsNotSame(frist, second);
+                        mSettingListence.passwordIsNotSame(frist, second, 0);
                         pw.setLength(0);
                         isError = true;
                         new Handler().postDelayed(new Runnable() {
@@ -279,7 +285,7 @@ public class CustomMainAppLock extends View {
 
         }
 
-        isNeedWithHand = false;
+//        isNeedWithHand = false;
         invalidate();
     }
 
@@ -287,11 +293,12 @@ public class CustomMainAppLock extends View {
         listVo.clear();
         pressVo.clear();
         mLineVo.clear();
+        isCandrawa = true;
         initDefaultCricleData();
     }
 
 
-    public void isACell(float x, float y) {
+    public boolean isACell(float x, float y) {
         //开始计算触摸点的位置是否在某个格子的指定范围之中
         for (int i = 0; i < 9; i++) {
             if (listVo.get(i).x + touch_big_circle_size > x && listVo.get(i).x - touch_big_circle_size < x) {
@@ -302,12 +309,14 @@ public class CustomMainAppLock extends View {
                         pressVo.add(listVo.get(i));
                         LineVo mVo = new LineVo(listVo.get(i).x, listVo.get(i).y);
                         mLineVo.add(mVo);
+                        return true;
                     }
 
                 }
             }
         }
         invalidate();
+        return false;
     }
 
     public void drawPressCricle(Canvas canvas, float x, float y, int lightColor, int trasColor) {
@@ -337,8 +346,9 @@ public class CustomMainAppLock extends View {
     }
 
     public interface AppLockSettingListence {
-        //设置密码模式的时候两次密码不一致
-        void passwordIsNotSame(String firstPass, String secondPass);
+        //设置密码模式的时候两次密码不一致（status 用于判断状态，因为密码错误的时候会有短暂的提示时间，提示时间过后会在调用一次）
+        //也就是说该方法会在密码错误的时候调用一次，错误提示过后会在调用一次，  这两种状态使用status区分，0表示第一次，1表示第二次
+        void passwordIsNotSame(String firstPass, String secondPass, int status);
 
         //再次设置密码的回调（第一次密码设置成功后回调）
         void passSetAgain();

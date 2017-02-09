@@ -24,8 +24,12 @@ public class SettingPwd extends Activity {
         tv = (TextView) findViewById(R.id.tv);
         lock.setAppLockSettingListence(new CustomMainAppLock.AppLockSettingListence() {
             @Override
-            public void passwordIsNotSame(String firstPass, String secondPass) {
-                tv.setText("两次密码不一致");
+            public void passwordIsNotSame(String firstPass, String secondPass, int status) {
+                if (status == 0)
+                    tv.setText("两次密码不一致");
+                else
+                    tv.setText("请重新绘制密码");
+
             }
 
             @Override
