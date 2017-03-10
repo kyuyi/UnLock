@@ -64,3 +64,5 @@ UnLock 一款仿vivo手机的九宫格解锁程序，可以根据需求设置解
         app:touch_small_circle_color="@color/touch_light" />
 </LinearLayout>
 ```
+### 详细说明：
+ 更多详细说明请查看源码
