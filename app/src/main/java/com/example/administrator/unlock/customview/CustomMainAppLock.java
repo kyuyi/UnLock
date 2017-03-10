@@ -277,7 +277,7 @@ public class CustomMainAppLock extends View {
                         public void run() {
                             mHandler.sendEmptyMessage(0);
                         }
-                    }, 800);
+                    }, 1000);
                 }
 
 
